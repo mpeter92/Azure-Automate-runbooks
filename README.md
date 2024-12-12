@@ -70,7 +70,12 @@ Now we can create the runbook to get the inactive users and email them.
 * be sure to enter the mailbox we are sending from on line 13
 * ![image](https://github.com/user-attachments/assets/e9fa3b7f-221d-44eb-a430-6702723d961c)
 * The runbook is configured to look for inactivity older than 60 days but you can modify this on line 15.
+<br />
 
+## Step 8 - Test the runbook to ensure it runs ok
+Test it first before publishing it. 
+Note!!! this will send emails to the users it finds as inactive so if you want to test before emailing you can
+* ![image](https://github.com/user-attachments/assets/338032b2-1415-42e0-9b78-5217cd5db30f)
 
 
   
