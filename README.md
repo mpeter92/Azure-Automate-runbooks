@@ -36,9 +36,12 @@ Go to your newly created automation account and click
 
 ## step 4
 Now that we have the object id you can give the managed identity permission to send emails on behalf of your mailbox.
-* Copy the script from exchangepermission.ps1.
+* Copy the script from exchangepermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 
 
-
+## step 5
+Next step is the give the managed identity graph permission so it can per for the tasks needed.
+* Copy the script from graphpermission.ps1 to powershell ISE.
+* be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 
