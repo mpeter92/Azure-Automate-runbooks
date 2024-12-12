@@ -44,15 +44,23 @@ Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accou
             $ObjUsers | Add-Member NoteProperty -Name "Last Success Signin (UTC)" -Value "N/A"
         }
         $arrOutput.Add($ObjUsers)
-    } else {
-        Write-Host $user.UserPrincipalName "signed in on" $lastsignin "not adding to report" -ForegroundColor Green
-    }
+    } 
 }
 
 # Exportation of the results
-$arrOutput | Sort-Object UserPrincipalName, LastLogin 
-Write-Output $arrOutput
 
+Write-output "User Sign-In Report"
+Write-output "=================="
+foreach ($item in $arrOutput | Sort-Object 'User Principal Name', 'Last Success Signin (UTC)') {
+    Write-output "User Principal Name: $($item.'User Principal Name')"
+    Write-output "Last Success Signin (UTC): $($item.'Last Success Signin (UTC)')"
+    Write-output "------------------------"
+}
+
+Write-output ""
+Write-output ""
+
+Write-output "Emailing users"
 $Headers = @{
  "Authorization" = "Bearer $($secretToken)"
  "Content-type"  = "application/json"
@@ -77,4 +85,5 @@ foreach ($user in $arrOutput) {
    
    # Send the email
    $apicall = Invoke-RestMethod -Uri $apiquery -Method POST -Headers $Headers -Body $emailBodyJson
+   Write-output "Emailing $($user.'User Principal Name')"
 }
