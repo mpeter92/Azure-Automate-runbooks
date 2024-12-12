@@ -28,9 +28,9 @@ Open Your azure portal and go to Automation accounts.
 
 ## step 3
 Go to your newly created automation account and click
-* Acount settings
-* Identity
-* Copy the object ID as we will need it later.
+* 1 Acount settings
+* 2 Identity
+* 3 Copy the object ID as we will need it later.
 * ![image](https://github.com/user-attachments/assets/53a9d2bd-0984-4df5-bc53-a4fe652c3161)
 
 
