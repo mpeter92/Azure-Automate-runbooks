@@ -46,5 +46,15 @@ Next step is the give the managed identity graph permission so it can per for th
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 
 ## step 6 
+Now we need to install the graph modules in the automate account
+* in the automation account click Shared resources
+* Modules
+* Add a module
+*![image](https://github.com/user-attachments/assets/425949ba-9f5b-4101-b015-b944d4bd6fcc)
+* Click browse from gallery
+*![image](https://github.com/user-attachments/assets/0b91e696-5cb1-4ba0-8451-ff3b2ab6bdaf)
+* Search for and install Microsoft.Graph.Authentication
+* Search for and install Microsoft.Graph.Users
+
 
 
