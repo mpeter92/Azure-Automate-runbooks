@@ -1,7 +1,7 @@
 # AzureAutomate
 This guide will give steps to create an azure automate runbook to find a list of inactive users and email them.
 **
-## Step 1
+## Step 1 - install the graph and exchange powershell modules
 
 Install the Microsoft Graph powershell module and the Exchange online powershell module
 open powershell with administrator rights and run the following command.
@@ -14,7 +14,7 @@ When thats complete run the following command to install the exchange online pow
 * https://learn.microsoft.com/en-us/powershell/exchange/exchange-online-powershell-v2?view=exchange-ps#install-and-maintain-the-exchange-online-powershell-module
 <br />
 
-## Step 2
+## Step 2 - Create the automation account
 Open Your azure portal and go to Automation accounts.
 
 * https://portal.azure.com/#browse/Microsoft.Automation%2FAutomationAccounts <br />
@@ -25,7 +25,7 @@ Open Your azure portal and go to Automation accounts.
 * Leave rest of settings as they are and click create.
 <br />
 
-## step 3
+## step 3 - save the managed identity ID
 Go to your newly created automation account and click
 * 1 Acount settings
 * 2 Identity
@@ -33,19 +33,19 @@ Go to your newly created automation account and click
 * ![image](https://github.com/user-attachments/assets/53a9d2bd-0984-4df5-bc53-a4fe652c3161)
 <br />
 
-## step 4
+## step 4 - Give the Manged Identity the exchange permission
 Now that we have the object id you can give the managed identity permission to send emails on behalf of your mailbox.
 * Copy the script from exchangepermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 <br />
 
-## step 5
+## step 5 - Give the Manged Identity the graph permission
 Next step is the give the managed identity graph permission so it can per for the tasks needed.
 * Copy the script from graphpermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 <br />
 
-## step 6 
+## step 6 - Install the modules on the automation account.
 Now we need to install the graph modules in the automate account
 * in the automation account click Shared resources
 * Modules
@@ -58,4 +58,19 @@ Now we need to install the graph modules in the automate account
 * select the 7.2 runtime version for each.
 <br />
 
+## step 7 - create runbook
+Now we can create the runbook to get the inactive users and email them.
+* under your automation account click process automation
+* Runbooks
+* Create a runbook
+* ![image](https://github.com/user-attachments/assets/46f93840-faac-4bb6-8768-f0af1c00a862)
+* Fill in the required information and click create
+* ![image](https://github.com/user-attachments/assets/e210f2d5-e281-4665-bdcb-cf438d4e1255)
+* Paste in the code from runbook.ps1
+* be sure to enter the mailbox we are sending from on line 13
+* ![image](https://github.com/user-attachments/assets/e9fa3b7f-221d-44eb-a430-6702723d961c)
+
+
+
+  
 
