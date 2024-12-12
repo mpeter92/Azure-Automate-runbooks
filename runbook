@@ -50,10 +50,7 @@ Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accou
 }
 
 # Exportation of the results
-Write-Host ""
-Write-Host "AAD_UserSignInReport : Extracting Report ..."
-$arrOutput | Sort-Object UserPrincipalName, LastLogin | Export-Csv -NoTypeInformation -Path "$((Get-Date).ToString('yyyy-MM-dd_HH-mm-ss'))_AAD_UserSignInReport.csv"
-Write-Host "AAD_UserSignInReport : Extracting completed"
+$arrOutput | Sort-Object UserPrincipalName, LastLogin 
 Write-Output $arrOutput
 
 $Headers = @{
