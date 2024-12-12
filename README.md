@@ -45,3 +45,6 @@ Next step is the give the managed identity graph permission so it can per for th
 * Copy the script from graphpermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 
+## step 6 
+
+
