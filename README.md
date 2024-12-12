@@ -1,7 +1,7 @@
 # AzureAutomate
 This guide will give steps to create an azure automate runbook to find a list of inactive users and email them.
 **
-## Step 1 - install the graph and exchange powershell modules
+## Step 1 - Install the graph and exchange powershell modules
 
 Install the Microsoft Graph powershell module and the Exchange online powershell module
 open powershell with administrator rights and run the following command.
@@ -25,7 +25,7 @@ Open Your azure portal and go to Automation accounts.
 * Leave rest of settings as they are and click create.
 <br />
 
-## step 3 - save the managed identity ID
+## Step 3 - Save the managed identity ID
 Go to your newly created automation account and click
 * 1 Acount settings
 * 2 Identity
@@ -33,19 +33,19 @@ Go to your newly created automation account and click
 * ![image](https://github.com/user-attachments/assets/53a9d2bd-0984-4df5-bc53-a4fe652c3161)
 <br />
 
-## step 4 - Give the Manged Identity the exchange permission
+## Step 4 - Give the Manged Identity the exchange permission
 Now that we have the object id you can give the managed identity permission to send emails on behalf of your mailbox.
 * Copy the script from exchangepermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 <br />
 
-## step 5 - Give the Manged Identity the graph permission
+## Step 5 - Give the Manged Identity the graph permission
 Next step is the give the managed identity graph permission so it can per for the tasks needed.
 * Copy the script from graphpermission.ps1 to powershell ISE.
 * be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 <br />
 
-## step 6 - Install the modules on the automation account.
+## Step 6 - Install the modules on the automation account.
 Now we need to install the graph modules in the automate account
 * in the automation account click Shared resources
 * Modules
@@ -58,7 +58,7 @@ Now we need to install the graph modules in the automate account
 * select the 7.2 runtime version for each.
 <br />
 
-## step 7 - create runbook
+## Step 7 - Create runbook
 Now we can create the runbook to get the inactive users and email them.
 * under your automation account click process automation
 * Runbooks
