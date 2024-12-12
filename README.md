@@ -34,6 +34,10 @@ Go to your newly created automation account and click
 * ![image](https://github.com/user-attachments/assets/53a9d2bd-0984-4df5-bc53-a4fe652c3161)
 
 
+## step 4
+Now that we have the object id you can give the managed identity permission to send emails on behalf of your mailbox.
+* Copy the script from exchangepermission.ps1.
+* be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
 
 
 
