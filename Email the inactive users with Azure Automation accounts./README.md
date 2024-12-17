@@ -78,6 +78,15 @@ Test it first before publishing it.
 Note!!! this will send emails to the users it finds as inactive so if you want to test before emailing you can
 * ![image](https://github.com/user-attachments/assets/338032b2-1415-42e0-9b78-5217cd5db30f)
 
+## Step 9 - Publish and add a schedule.
+Now that we have confirmed the runbook works as it should we can publish it and automate it so it runs on a schedule.
+* in the edit page click publish to publish the runbook. You can leave it here if you want to manually run each time or continue to add the schedule
+* To add the schedule click Schedules under Resources.
+* Click add a schedule
+* click link a schedule to your runbook
+* Click add a schedule
+* Set the parameters of the schedule, create and add to your runbook.
+
 
   
 
