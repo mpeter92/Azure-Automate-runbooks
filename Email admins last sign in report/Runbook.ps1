@@ -1,0 +1,79 @@
+try {
+    # Logging in to Azure.
+    Connect-AzAccount -Identity
+    $token = ((Get-AzAccessToken -AsSecureString -ResourceTypeName MSGraph).token)
+    $secretToken = ((Get-AzAccessToken -ResourceTypeName MSGraph).token)
+    # Get token and connect to MgGraph
+    Connect-MgGraph -AccessToken $token
+} catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+
+
+# Prompt for the number of days
+$daysago = 60
+$date = (Get-Date).AddDays(-$daysago)
+
+# Creation of the results table
+$arrOutput = [System.Collections.Generic.List[Object]]::new()
+
+# Loop through each user and store their data in the variable arrOutput
+Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accountEnabled,onPremisesSyncEnabled,createdDateTime,signInActivity) {
+    $lastsignin = ($user.signInActivity).lastSignInDateTime
+    if ($lastsignin -lt $date) {
+    $ObjUsers = New-Object PSObject
+    $ObjUsers | Add-Member NoteProperty -Name "Object ID" -Value $user.id
+    $ObjUsers | Add-Member NoteProperty -Name "Display Name" -Value $user.displayName
+    $ObjUsers | Add-Member NoteProperty -Name "User Principal Name" -Value $user.userPrincipalName
+    $ObjUsers | Add-Member NoteProperty -Name "Account Enabled" -Value ($user.accountEnabled -ne $null)
+    $ObjUsers | Add-Member NoteProperty -Name "onPremisesSyncEnabled" -Value ($user.onPremisesSyncEnabled -ne $null)
+    $ObjUsers | Add-Member NoteProperty -Name "Created DateTime (UTC)" -Value $user.createdDateTime
+    $ObjUsers | Add-Member NoteProperty -Name "Last Success Signin (UTC)" -Value ($user.signInActivity).lastSignInDateTime
+    $arrOutput.Add($ObjUsers) 
+    }
+}
+
+# Get the current date in the desired format
+$currentDate = (Get-Date).ToString('dd-MM-yyyy')
+
+# Convert the results to CSV format in memory
+$csvContent = $arrOutput | Sort-Object UserPrincipalName, LastLogin | ConvertTo-Csv -NoTypeInformation -Delimiter ',' | Out-String
+$csvBytes = [System.Text.Encoding]::UTF8.GetBytes($csvContent)
+$csvBase64 = [System.Convert]::ToBase64String($csvBytes)
+
+
+# Email script
+$apiquery = 'https://graph.microsoft.com/v1.0/users/info@MichaelSmithDemo.onmicrosoft.com/sendMail'
+$emailBody = @{
+    message = @{
+        subject = "Sign in logs"
+        body = @{
+            contentType = "Text"
+            content = "Sign in logs report."
+        }
+        toRecipients = @(@{ emailAddress = @{ address = "ga@micksaz.ie" } })
+        ccRecipients = @(@{ emailAddress = @{ address = "admin2@MichaelSmithDemo.onmicrosoft.com" } })
+        attachments = @(@{
+            '@odata.type' = '#microsoft.graph.fileAttachment'
+            name = "SignInReport_$currentDate.csv"
+            contentBytes = $csvBase64
+        })
+    }
+    saveToSentItems = $false
+}
+
+# Convert the email body to JSON
+$emailBodyJson = $emailBody | ConvertTo-Json -Depth 10
+
+# Define Headers
+$Headers = @{
+  "Authorization" = "Bearer $($SecretToken)"
+  "Content-type"  = "application/json"
+}
+
+# Send the email
+$apicall = Invoke-RestMethod -Uri $apiquery -Method POST -Headers $Headers -Body $emailBodyJson
+
+# Output the path of the CSV file
+Write-output "Report generated and emailed"
