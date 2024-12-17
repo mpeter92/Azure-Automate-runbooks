@@ -1,4 +1,4 @@
-# AzureAutomate
+# Email the inactive users with Azure Automation accounts.
 This guide will give steps to create an azure automate runbook to find a list of inactive users and email them.
 **
 ## Step 1 - Install the graph and exchange powershell modules
