@@ -11,7 +11,8 @@ try {
 }
 
 $mailbox = "info@domain.com"
-
+$recipient ="admin1@domain.com"
+$recipientCC = "admin2@domain.com"
 
 # Prompt for the number of days
 $daysago = 60
@@ -54,8 +55,8 @@ $emailBody = @{
             contentType = "Text"
             content = "Sign in logs report."
         }
-        toRecipients = @(@{ emailAddress = @{ address = "admin1@domain.com" } })
-        ccRecipients = @(@{ emailAddress = @{ address = "admin2@domain.com" } })
+        toRecipients = @(@{ emailAddress = @{ address = $recipient } })
+        ccRecipients = @(@{ emailAddress = @{ address = "$recipientCC  } })
         attachments = @(@{
             '@odata.type' = '#microsoft.graph.fileAttachment'
             name = "SignInReport_$currentDate.csv"
