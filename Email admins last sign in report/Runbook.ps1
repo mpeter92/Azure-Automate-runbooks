@@ -10,6 +10,8 @@ try {
     throw $_.Exception
 }
 
+$mailbox = "info@domain.com"
+
 
 # Prompt for the number of days
 $daysago = 60
@@ -44,7 +46,7 @@ $csvBase64 = [System.Convert]::ToBase64String($csvBytes)
 
 
 # Email script
-$apiquery = 'https://graph.microsoft.com/v1.0/users/info@MichaelSmithDemo.onmicrosoft.com/sendMail'
+$apiquery = "https://graph.microsoft.com/v1.0/users/$mailbox/sendMail"
 $emailBody = @{
     message = @{
         subject = "Sign in logs"
@@ -52,8 +54,8 @@ $emailBody = @{
             contentType = "Text"
             content = "Sign in logs report."
         }
-        toRecipients = @(@{ emailAddress = @{ address = "ga@micksaz.ie" } })
-        ccRecipients = @(@{ emailAddress = @{ address = "admin2@MichaelSmithDemo.onmicrosoft.com" } })
+        toRecipients = @(@{ emailAddress = @{ address = "admin1@domain.com" } })
+        ccRecipients = @(@{ emailAddress = @{ address = "admin2@domain.com" } })
         attachments = @(@{
             '@odata.type' = '#microsoft.graph.fileAttachment'
             name = "SignInReport_$currentDate.csv"
