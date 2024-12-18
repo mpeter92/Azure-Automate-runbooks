@@ -1,6 +1,6 @@
 # Email the Admins a last sign in report.
 This guide goes through the steps to create an azure automate runbook to generate the last sign in report and email them to specific email addresses.
-**
+
 ## Step 1 - Install the graph and exchange powershell modules
 
 Install the Microsoft Graph powershell module and the Exchange online powershell module
