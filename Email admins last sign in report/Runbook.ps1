@@ -14,9 +14,6 @@ $mailbox = "info@domain.com"
 $recipient ="admin1@domain.com"
 $recipientCC = "admin2@domain.com"
 
-# Prompt for the number of days
-$daysago = 60
-$date = (Get-Date).AddDays(-$daysago)
 
 # Creation of the results table
 $arrOutput = [System.Collections.Generic.List[Object]]::new()
@@ -24,7 +21,6 @@ $arrOutput = [System.Collections.Generic.List[Object]]::new()
 # Loop through each user and store their data in the variable arrOutput
 Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accountEnabled,onPremisesSyncEnabled,createdDateTime,signInActivity) {
     $lastsignin = ($user.signInActivity).lastSignInDateTime
-    if ($lastsignin -lt $date) {
     $ObjUsers = New-Object PSObject
     $ObjUsers | Add-Member NoteProperty -Name "Object ID" -Value $user.id
     $ObjUsers | Add-Member NoteProperty -Name "Display Name" -Value $user.displayName
@@ -35,7 +31,6 @@ Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accou
     $ObjUsers | Add-Member NoteProperty -Name "Last Success Signin (UTC)" -Value ($user.signInActivity).lastSignInDateTime
     $arrOutput.Add($ObjUsers) 
     }
-}
 
 # Get the current date in the desired format
 $currentDate = (Get-Date).ToString('dd-MM-yyyy')
