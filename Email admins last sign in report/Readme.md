@@ -70,8 +70,7 @@ Now we can create the runbook to get the inactive users and email them.
 * Enter the mailbox you want to email **FROM** on line 13 $mailbox.
 * Enter the email addresses on line 14 and CC'd addresses on line 15
 * ![image](https://github.com/user-attachments/assets/83d9b852-47cc-4220-8f69-692a3842f76a)
-
-* The runbook is configured to look for inactivity older than 60 days but you can modify this on line 15.
+* 
 *  You may need to wait a few minutes for the modules from step 6 to install otherwise you may see an error in the following section that hte module is not found. If you see this error confirm the modules are installed and just wait a few minutes and try again.
 <br />
 
