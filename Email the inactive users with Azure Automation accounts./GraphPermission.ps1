@@ -19,3 +19,4 @@ ForEach($scope in $graphScopes){
   $appRole = $graphApp.AppRoles | Where-Object {$_.Value -eq $scope}
   New-MgServicePrincipalAppRoleAssignment -PrincipalId $managedIdentityId -ServicePrincipalId $managedIdentityId -ResourceId $graphApp.Id -AppRoleId $appRole.Id
 }
+
