@@ -71,7 +71,7 @@ Now we can create the runbook to get the inactive users and email them.
 * Enter the email addresses on line 14 and CC'd addresses on line 15
 * ![image](https://github.com/user-attachments/assets/83d9b852-47cc-4220-8f69-692a3842f76a)
 * 
-*  You may need to wait a few minutes for the modules from step 6 to install otherwise you may see an error in the following section that hte module is not found. If you see this error confirm the modules are installed and just wait a few minutes and try again.
+*  You may need to wait a few minutes for the modules from step 6 to install otherwise you may see an error in the following section that the module is not found. If you see this error confirm the modules are installed and just wait a few minutes and try again.
 <br />
 
 ## Step 8 - Test the runbook to ensure it runs ok
