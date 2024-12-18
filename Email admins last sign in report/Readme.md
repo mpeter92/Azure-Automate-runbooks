@@ -68,7 +68,7 @@ Now we can create the runbook to get the inactive users and email them.
 * ![image](https://github.com/user-attachments/assets/e210f2d5-e281-4665-bdcb-cf438d4e1255)
 * Paste in the code from runbook.ps1
 * Enter the mailbox you want to email **FROM** on line 13 $mailbox.
-* Enter the email addresses on line 14 and CC'd addresses on line 15
+* Enter the email addresses on line 14 and CC'd addresses on line 15 that you are sending **TO**
 * ![image](https://github.com/user-attachments/assets/83d9b852-47cc-4220-8f69-692a3842f76a)
 * 
 *  You may need to wait a few minutes for the modules from step 6 to install otherwise you may see an error in the following section that the module is not found. If you see this error confirm the modules are installed and just wait a few minutes and try again.
