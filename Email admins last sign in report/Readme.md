@@ -55,14 +55,16 @@ Go to your newly created automation account and click
 ## Step 4 - Give the Manged Identity the exchange permission
 Now that we have the object id you can give the managed identity permission to send emails on behalf of your mailbox.
 * Copy the script from exchangepermission.ps1 to powershell ISE.
-* be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
+* be sure to modify the script with your Managed Identity object id, the mailbox you want to send from and your admin address to connect to exchangeonline
+* ![image](https://github.com/user-attachments/assets/9d1c3c4b-11a9-4594-98bd-c1c3049edfc2)
 <br />
 
 ## Step 5 - Give the Manged Identity the graph permission
 Next step is the give the managed identity graph permission so it can per for the tasks needed.
 * Copy the script from graphpermission.ps1 to powershell ISE.
-* be sure to modify the script with your Managed Identity object id and the mailbox you want to send from.
-<br />
+* be sure to modify the script with your Managed Identity object id.
+* ![image](https://github.com/user-attachments/assets/0c88360e-9933-4b0f-a011-f59b03ee860e)
+<br/>
 
 ## Step 6 - Install the modules on the automation account.
 Now we need to install the graph modules in the automate account
