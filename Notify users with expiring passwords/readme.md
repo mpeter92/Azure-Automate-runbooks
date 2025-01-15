@@ -94,7 +94,7 @@ Now we can create the runbook to get the inactive users and email them.
 1. If you want to test the run book with just getting a list of inactive users you can paste in the code from getusers.ps1. The script is configured to get inactive users older than 60 days. you can modify this.
 2. To configure the runbook to email the inactive users. Paste in the code from runbook.ps1
 * be sure to enter the mailbox we are sending from on line 13
-* ![image](https://github.com/user-attachments/assets/e9fa3b7f-221d-44eb-a430-6702723d961c)
+* ![image](https://github.com/user-attachments/assets/53cad181-650e-4adf-a8aa-8be2e7a8af5c)
 * The runbook is configured to look for inactivity older than 60 days but you can modify this on line 15.
 *  You may need to wait a few minutes for the modules from step 6 to install otherwise you may see an error in the following section that hte module is not found. If you see this error confirm the modules are installed and just wait a few minutes and try again.
 <br />
