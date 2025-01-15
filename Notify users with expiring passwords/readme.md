@@ -100,7 +100,7 @@ Now we can create the runbook to get the inactive users and email them.
 
 ## Step 8 - Test the runbook to ensure it runs ok
 Test it first before publishing it. 
-Note!!! this will send emails to the users it finds as inactive so if you want to test before emailing you can
+Note!!! this will send emails to the users it finds with expiring passwords so if you want to test before emailing you can
 * ![image](https://github.com/user-attachments/assets/338032b2-1415-42e0-9b78-5217cd5db30f)
 
 ## Step 9 - Publish and add a schedule.
