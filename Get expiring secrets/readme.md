@@ -76,6 +76,7 @@ Now we need to install the graph modules in the automate account
 * ![image](https://github.com/user-attachments/assets/0b91e696-5cb1-4ba0-8451-ff3b2ab6bdaf)
 * Search for and install Microsoft.Graph.Authentication
 * Search for and install Microsoft.Graph.Users
+* Search for and install Microsoft.Graph.Applications
 * select the 7.2 runtime version for each.
 <br />
 
