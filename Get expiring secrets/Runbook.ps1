@@ -13,31 +13,138 @@ try {
 $mailbox = "info@domain.com"
 $recipient ="admin1@domain.com"
 $recipientCC = "admin2@domain.com"
-
+$DaysUntilExpiration = 90
+$IncludeAlreadyExpired = yes
 
 # Creation of the results table
 $arrOutput = [System.Collections.Generic.List[Object]]::new()
 
-# Loop through each user and store their data in the variable arrOutput
-Foreach ($user in Get-MgUser -All -Select id,userPrincipalName,displayName,accountEnabled,onPremisesSyncEnabled,createdDateTime,signInActivity) {
-    $lastsignin = $null
-    if ($user.signInActivity -ne $null) {
-        $lastsignin = $user.signInActivity.lastSignInDateTime
+# Loop through each app and store the data in the variable arrOutput
+$Now = Get-Date
+$Applications = Get-MgApplication -all
+$Logs = @()
+
+foreach ($App in $Applications) {
+    $AppName = $App.DisplayName
+    $AppID   = $App.Id
+    $ApplID  = $App.AppId
+
+    $AppCreds = Get-MgApplication -ApplicationId $AppID |
+        Select-Object PasswordCredentials, KeyCredentials
+
+    $Secrets = $AppCreds.PasswordCredentials
+    $Certs   = $AppCreds.KeyCredentials
+
+    foreach ($Secret in $Secrets) {
+        $StartDate  = $Secret.StartDateTime
+        $EndDate    = $Secret.EndDateTime
+        $SecretName = $Secret.DisplayName
+
+        $Owner    = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Username = $Owner.AdditionalProperties.userPrincipalName -join ';'
+        $OwnerID  = $Owner.Id -join ';'
+
+        if ($null -eq $Owner.AdditionalProperties.userPrincipalName) {
+            $Username = @(
+                $Owner.AdditionalProperties.displayName
+                '**<This is an Application>**'
+            ) -join ' '
+        }
+        if ($null -eq $Owner.AdditionalProperties.displayName) {
+            $Username = '<<No Owner>>'
+        }
+
+        $RemainingDaysCount = ($EndDate - $Now).Days
+
+        if ($IncludeAlreadyExpired -eq 'No') {
+            if ($RemainingDaysCount -le $DaysUntilExpiration -and $RemainingDaysCount -ge 0) {
+                $Logs += [PSCustomObject]@{
+                    'ApplicationName'        = $AppName
+                    'ApplicationID'          = $ApplID
+                    'Secret Name'            = $SecretName
+                    'Secret Start Date'      = $StartDate
+                    'Secret End Date'        = $EndDate
+                    'Certificate Name'       = $Null
+                    'Certificate Start Date' = $Null
+                    'Certificate End Date'   = $Null
+                    'Owner'                  = $Username
+                    'Owner_ObjectID'         = $OwnerID
+                }
+            }
+        } elseif ($IncludeAlreadyExpired -eq 'Yes') {
+            if ($RemainingDaysCount -le $DaysUntilExpiration) {
+                $Logs += [PSCustomObject]@{
+                    'ApplicationName'        = $AppName
+                    'ApplicationID'          = $ApplID
+                    'Secret Name'            = $SecretName
+                    'Secret Start Date'      = $StartDate
+                    'Secret End Date'        = $EndDate
+                    'Certificate Name'       = $Null
+                    'Certificate Start Date' = $Null
+                    'Certificate End Date'   = $Null
+                    'Owner'                  = $Username
+                    'Owner_ObjectID'         = $OwnerID
+                }
+            }
+        }
     }
-    $ObjUsers = New-Object PSObject
-    $ObjUsers | Add-Member NoteProperty -Name "Object ID" -Value $user.id
-    $ObjUsers | Add-Member NoteProperty -Name "Display Name" -Value $user.displayName
-    $ObjUsers | Add-Member NoteProperty -Name "User Principal Name" -Value $user.userPrincipalName
-    $ObjUsers | Add-Member NoteProperty -Name "Account Enabled" -Value ($user.accountEnabled -ne $null)
-    $ObjUsers | Add-Member NoteProperty -Name "onPremisesSyncEnabled" -Value ($user.onPremisesSyncEnabled -ne $null)
-    $ObjUsers | Add-Member NoteProperty -Name "Created DateTime (UTC)" -Value ($user.createdDateTime.ToString("dd-MM-yyyyTHH:mm:ssZ"))
-    if ($lastsignin -ne $null) {
-        $ObjUsers | Add-Member NoteProperty -Name "Last Success Signin (UTC)" -Value ($lastsignin.ToString("dd-MM-yyyyTHH:mm:ssZ"))
-    } else {
-        $ObjUsers | Add-Member NoteProperty -Name "Last Success Signin (UTC)" -Value "N/A"
+
+    foreach ($Cert in $Certs) {
+        $StartDate = $Cert.StartDateTime
+        $EndDate   = $Cert.EndDateTime
+        $CertName  = $Cert.DisplayName
+
+        $Owner    = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Username = $Owner.AdditionalProperties.userPrincipalName -join ';'
+        $OwnerID  = $Owner.Id -join ';'
+
+        if ($null -eq $Owner.AdditionalProperties.userPrincipalName) {
+            $Username = @(
+                $Owner.AdditionalProperties.displayName
+                '**<This is an Application>**'
+            ) -join ' '
+        }
+        if ($null -eq $Owner.AdditionalProperties.displayName) {
+            $Username = '<<No Owner>>'
+        }
+
+        $RemainingDaysCount = ($EndDate - $Now).Days
+
+        if ($IncludeAlreadyExpired -eq 'No') {
+            if ($RemainingDaysCount -le $DaysUntilExpiration -and $RemainingDaysCount -ge 0) {
+                $Logs += [PSCustomObject]@{
+                    'ApplicationName'        = $AppName
+                    'ApplicationID'          = $ApplID
+                    'Secret Name'            = $Null
+                    'Certificate Name'       = $CertName
+                    'Certificate Start Date' = $StartDate
+                    'Certificate End Date'   = $EndDate
+                    'Owner'                  = $Username
+                    'Owner_ObjectID'         = $OwnerID
+                    'Secret Start Date'      = $Null
+                    'Secret End Date'        = $Null
+                }
+            }
+        } elseif ($IncludeAlreadyExpired -eq 'Yes') {
+            if ($RemainingDaysCount -le $DaysUntilExpiration) {
+                $Logs += [PSCustomObject]@{
+                    'ApplicationName'        = $AppName
+                    'ApplicationID'          = $ApplID
+                    'Secret Name'            = $Null
+                    'Certificate Name'       = $CertName
+                    'Certificate Start Date' = $StartDate
+                    'Certificate End Date'   = $EndDate
+                    'Owner'                  = $Username
+                    'Owner_ObjectID'         = $OwnerID
+                    'Secret Start Date'      = $Null
+                    'Secret End Date'        = $Null
+                }
+            }
+        }
     }
-    $arrOutput.Add($ObjUsers) 
 }
+
+$arrOutput.AddRange($Logs)
 
 # Get the current date in the desired format
 $currentDate = (Get-Date).ToString('dd-MM-yyyy')
