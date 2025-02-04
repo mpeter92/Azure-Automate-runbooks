@@ -1,4 +1,4 @@
-# Email the Admins a expiring secrets in report.
+# Email the Admins an expiring secrets in report.
 This guide goes through the steps to create an azure automate runbook to generate the last sign in report and email them to specific email addresses.
 ## DISCLAIMER:
  
