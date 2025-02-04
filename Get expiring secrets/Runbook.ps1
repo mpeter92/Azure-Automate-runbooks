@@ -14,7 +14,7 @@ $mailbox = "info@domain.com"
 $recipient ="admin1@domain.com"
 $recipientCC = "admin2@domain.com"
 $DaysUntilExpiration = 90
-$IncludeAlreadyExpired = yes
+$IncludeAlreadyExpired = "yes"
 
 # Creation of the results table
 $arrOutput = [System.Collections.Generic.List[Object]]::new()
@@ -40,7 +40,8 @@ foreach ($App in $Applications) {
         $EndDate    = $Secret.EndDateTime
         $SecretName = $Secret.DisplayName
 
-        $Owner    = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Owners = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Owner    = $Owners | Select-Object -First 1
         $Username = $Owner.AdditionalProperties.userPrincipalName -join ';'
         $OwnerID  = $Owner.Id -join ';'
 
@@ -94,7 +95,8 @@ foreach ($App in $Applications) {
         $EndDate   = $Cert.EndDateTime
         $CertName  = $Cert.DisplayName
 
-        $Owner    = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Owners = Get-MgApplicationOwner -ApplicationId $App.Id
+        $Owner    = $Owners | Select-Object -First 1
         $Username = $Owner.AdditionalProperties.userPrincipalName -join ';'
         $OwnerID  = $Owner.Id -join ';'
 
@@ -150,7 +152,7 @@ $arrOutput.AddRange($Logs)
 $currentDate = (Get-Date).ToString('dd-MM-yyyy')
 
 # Convert the results to CSV format in memory
-$csvContent = $arrOutput | Sort-Object UserPrincipalName, "Last Success Signin (UTC)" | ConvertTo-Csv -NoTypeInformation -Delimiter ',' | Out-String
+$csvContent = $arrOutput | ConvertTo-Csv -NoTypeInformation -Delimiter ',' | Out-String
 $csvBytes = [System.Text.Encoding]::UTF8.GetBytes($csvContent)
 $csvBase64 = [System.Convert]::ToBase64String($csvBytes)
 
@@ -158,16 +160,16 @@ $csvBase64 = [System.Convert]::ToBase64String($csvBytes)
 $apiquery = "https://graph.microsoft.com/v1.0/users/$mailbox/sendMail"
 $emailBody = @{
     message = @{
-        subject = "Sign in logs"
+        subject = "Expiring Secrets and Certs"
         body = @{
             contentType = "Text"
-            content = "Sign in logs report."
+            content = "Expiring Secrets and Certs."
         }
         toRecipients = @(@{ emailAddress = @{ address = $recipient } })
         ccRecipients = @(@{ emailAddress = @{ address = $recipientCC } })
         attachments = @(@{
             '@odata.type' = '#microsoft.graph.fileAttachment'
-            name = "SignInReport_$currentDate.csv"
+            name = "SecretsCertReport_$currentDate.csv"
             contentBytes = $csvBase64
         })
     }
